@@ -279,6 +279,68 @@ section{max-width:1180px;margin:0 auto;padding:70px 24px;}
   font-size:14px;
 }
 
+/* ---------- video creation dropzone ---------- */
+.video-library{
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:22px;
+  background:var(--bg-panel);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.video-library-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+.video-library-head p{margin:0;color:var(--muted);font-size:14px;max-width:620px;}
+.video-upload{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:130px;
+  border:1px dashed var(--amber-dim);
+  border-radius:6px;
+  background:rgba(143,184,230,0.06);
+  color:var(--amber);
+  text-align:center;
+  cursor:pointer;
+  transition:background .2s,border-color .2s;
+}
+.video-upload:hover,.video-upload:focus-within{
+  background:rgba(143,184,230,0.12);
+  border-color:var(--amber);
+}
+.video-upload input{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+}
+.video-upload strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:16px;}
+.video-upload span{display:block;color:var(--muted);font-size:12px;margin-top:6px;}
+.local-videos-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:18px;
+  margin-top:20px;
+}
+.local-video-card{
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:rgba(0,0,0,.18);
+}
+.local-video-card video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#05070b;}
+.local-video-info{padding:12px 14px;}
+.local-video-info strong{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.local-video-info span{display:block;color:var(--muted);font-size:12px;margin-top:5px;}
+.video-library-note{margin:16px 0 0;color:var(--muted);font-size:12px;}
+
 /* ---------- skills ---------- */
 .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
 .skill{
@@ -370,6 +432,7 @@ footer{
   <div class="scrubber-labels" id="scrubberLabels">
     <a href="#accueil" data-tc="00:00:00:00" class="active"><span class="tc">00:00</span>Accueil</a>
     <a href="#projets" data-tc="00:00:12:00"><span class="tc">00:12</span>Projets</a>
+    <a href="#videos" data-tc="00:00:22:00"><span class="tc">00:22</span>Vidéos</a>
     <a href="#competences" data-tc="00:00:28:00"><span class="tc">00:28</span>Compétences</a>
     <a href="#contact" data-tc="00:00:40:00"><span class="tc">00:40</span>Contact</a>
   </div>
@@ -402,6 +465,24 @@ footer{
   <div class="section-head"><span class="tc">B-ROLL</span><h2>Créations</h2></div>
   <div class="filters" id="filters"></div>
   <div class="grid" id="grid"></div>
+</section>
+
+<section id="videos">
+  <div class="section-head"><span class="tc">MEDIA BIN</span><h2>Créations vidéo</h2></div>
+  <div class="video-library">
+    <div class="video-library-head">
+      <div>
+        <h3>Ajoutez vos vidéos pour les prévisualiser</h3>
+        <p>Sélectionnez un ou plusieurs fichiers MP4, WebM ou MOV. Ils apparaîtront ici immédiatement dans votre navigateur.</p>
+      </div>
+    </div>
+    <label class="video-upload" for="videoPicker">
+      <input id="videoPicker" type="file" accept="video/mp4,video/webm,video/quicktime" multiple>
+      <span><strong>＋ Choisir des créations vidéo</strong><span>MP4 recommandé · plusieurs fichiers possibles</span></span>
+    </label>
+    <div class="local-videos-grid" id="localVideosGrid"></div>
+    <p class="video-library-note">Pour les rendre visibles à tous sur le site publié, copiez ensuite les fichiers dans <code>assets/</code> et ajoutez-les dans <code>const PROJECTS</code> avec <code>media:{type:"video",src:"assets/nom.mp4"}</code>.</p>
+  </div>
 </section>
 
 <section id="competences">
@@ -509,6 +590,8 @@ CATEGORIES.forEach(cat=>{
 
 /* ------------- rendu de la grille ------------- */
 const gridEl = document.getElementById('grid');
+const localVideosGrid = document.getElementById('localVideosGrid');
+const videoPicker = document.getElementById('videoPicker');
 function mediaHTML(media, fallbackText){
   if(!media) return `<div class="fallback">${fallbackText}</div>`;
   if(media.type==="image") return `<img src="${media.src}" alt="">`;
@@ -545,6 +628,33 @@ function renderGrid(){
   });
 }
 renderGrid();
+
+/* ------------- prévisualisation de vidéos locales ------------- */
+videoPicker.addEventListener('change', (event)=>{
+  const files = [...event.target.files].filter(file=>file.type.startsWith('video/'));
+  files.forEach(file=>{
+    const url = URL.createObjectURL(file);
+    const card = document.createElement('article');
+    card.className = 'local-video-card';
+
+    const video = document.createElement('video');
+    video.src = url;
+    video.controls = true;
+    video.preload = 'metadata';
+    video.playsInline = true;
+
+    const info = document.createElement('div');
+    info.className = 'local-video-info';
+    const name = document.createElement('strong');
+    name.textContent = file.name;
+    const size = document.createElement('span');
+    size.textContent = `${(file.size / 1024 / 1024).toFixed(1)} Mo`;
+    info.append(name, size);
+    card.append(video, info);
+    localVideosGrid.appendChild(card);
+  });
+  event.target.value = '';
+});
 
 /* ------------- modal ------------- */
 const overlay = document.getElementById('modalOverlay');

@@ -49,6 +49,10 @@ Dans `index.html`, ajouter un objet dans `const PROJECTS` :
 { type: "youtube", id: "ID_YOUTUBE" }
 ```
 
+## Prévisualiser plusieurs vidéos
+
+La section **Créations vidéo** permet de sélectionner plusieurs fichiers MP4, WebM ou MOV et de les prévisualiser directement dans le navigateur. Cette prévisualisation est locale et temporaire. Pour publier une vidéo, copiez-la dans `assets/`, puis référencez-la dans `const PROJECTS`.
+
 ## Contacts intégrés
 
 - `hassan_boro@yahoo.com`
