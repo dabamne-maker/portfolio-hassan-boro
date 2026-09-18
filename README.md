@@ -1,110 +1,61 @@
-# Hassan Boro | Portfolio
+# Hassan Boro — Portfolio audiovisuel
 
-Portfolio professionnel moderne et premium pour un monteur, designer et artiste 3D.
+Portfolio statique de **Tjigoulo Dabamne Hassan Boro**, monteur vidéo et créateur audiovisuel basé à Ouagadougou, Burkina Faso.
 
-## Présentation
+La page utilise une direction artistique sombre, bleu-argent et dorée, avec une navigation façon timeline, un fond vidéo, une photo de profil, une grille de créations filtrable, des modales détaillées et une section outils/compétences.
 
-Ce projet est une landing page / portfolio visuelle qui met en avant :
+## Lancer le portfolio
 
-- l'image de profil,
-- le logo,
-- les compétences en montage, motion design et 3D,
-- des projets sélectionnés,
-- une section reel pour l'animation de logo,
-- les contacts et le formulaire de contact.
-
-## Structure du projet
-
-```text
-portfolio-hassan-boro/
-├── index.html
-├── styles.css
-├── script.js
-├── README.md
-├── assets/
-│   ├── logo.svg
-│   ├── profile-placeholder.svg
-│   └── logo-animation.mp4
-└── .gitignore
-```
-
-## Démarrage rapide
-
-1. Ouvrez le projet dans un navigateur, ou lancez un serveur local :
+Depuis la racine du projet :
 
 ```bash
 python -m http.server 8000
 ```
 
-2. Ensuite ouvrez :
+Puis ouvrir `http://localhost:8000`.
+
+## Fichiers importants
 
 ```text
-http://localhost:8000
+index.html                 Page complète et données des projets
+assets/photo-hassan.jpg    Photo de profil
+assets/fond-video.mp4      Vidéo d'arrière-plan
+assets/intro.mp4           Intro / showreel intégré dans les projets
+assets/logo-animation.mp4  Animation logo conservée pour une prochaine section
 ```
 
-## Personnaliser le portfolio
+## Ajouter une création
 
-### 1. Ajouter votre photo de profil
-Remplacez le fichier :
+Dans `index.html`, ajouter un objet dans `const PROJECTS` :
 
-```text
-assets/profile-placeholder.svg
-```
-
-par votre vraie photo de profil en format `.jpg` ou `.png`.
-
-### 2. Ajouter votre logo
-Remplacez le fichier :
-
-```text
-assets/logo.svg
-```
-
-par votre logo officiel, vectorisé ou exporté dans un style premium.
-
-### 3. Ajouter votre animation de logo en MP4
-Placez votre fichier :
-
-```text
-assets/logo-animation.mp4
-```
-
-Le site l'utilise automatiquement dans la section `Reel`.
-
-### 4. Modifier les informations de contact
-Dans `index.html`, remplacez :
-
-- `hassan@example.com`
-- `+00 00 00 00 00`
-- le texte de présentation
-- les liens des réseaux / projets
-
-## Personnalisation visuelle
-
-Le thème est pensé pour un style élégant, sombre et premium avec des accents cyan, violet et rose.
-
-Vous pouvez ajuster la palette dans `styles.css` via les variables CSS en haut du fichier :
-
-```css
-:root {
-  --bg: #08090d;
-  --primary: #89f7fe;
-  --secondary: #7d6cff;
-  --accent: #ff5ea8;
+```js
+{
+  title: "Nom du projet",
+  category: "Publicité",
+  role: "Montage vidéo",
+  tools: ["Premiere Pro", "After Effects"],
+  duration: "01:30",
+  media: { type: "video", src: "assets/mon-projet.mp4" },
+  link: "https://exemple.com",
+  desc: "Courte description du projet."
 }
 ```
 
-## Déploiement GitHub Pages
+`media` accepte une image locale, une vidéo locale ou une vidéo YouTube :
 
-1. Pousser le projet sur GitHub.
-2. Dans le dépôt, ouvrir les réglages.
-3. Section `Pages`.
-4. Sélectionner la branche `main` et le dossier racine.
+```js
+{ type: "image", src: "assets/projet.jpg" }
+{ type: "video", src: "assets/projet.mp4" }
+{ type: "youtube", id: "ID_YOUTUBE" }
+```
 
-## Auteur
+## Contacts intégrés
 
-Hassan Boro
+- `hassan_boro@yahoo.com`
+- WhatsApp : `+226 76 55 00 68`
+- WhatsApp : `+226 71 71 11 25`
+- LinkedIn : [Hassan Boro](https://www.linkedin.com/in/hassan-boro)
 
-## Licence
+## Déploiement
 
-Ce projet est prêt à être personnalisé et utilisé comme portfolio personnel.
+Le dépôt est prêt pour GitHub Pages : sélectionner la branche `main` et le dossier racine dans les réglages **Pages** du dépôt GitHub.
